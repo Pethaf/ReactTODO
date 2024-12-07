@@ -68,7 +68,7 @@ function App() {
       {toggleAddTask ? (
         <AddTaskForm addTask={addTask} cancelEdit={cancelEdit} />
       ) : (
-        <>
+        <div>
           <FilterInput input={filter} changeFilter={updateFilter} />
           <label htmlFor="case-sensitive">
             Case Sensitive
@@ -90,10 +90,9 @@ function App() {
             updateTask={updateTask}
             deleteTask={deleteTask}
           />
-        </>
+        </div>
       )}
     </div>
   );
 }
-
 export default App;

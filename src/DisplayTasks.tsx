@@ -11,6 +11,9 @@ import { ITaskHandlers } from "./Interfaces/ITaskHandler";
     updateTask,
     deleteTask,
   }: IDisplayTasksProps) => {
+    if(tasks.length === 0){
+        return <p>No Tasks To Display</p>
+    }
     return (
       <>
         {tasks.map((task) => (
