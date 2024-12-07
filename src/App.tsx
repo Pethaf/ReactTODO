@@ -1,41 +1,45 @@
-import { useMemo, useState, useEffect} from "react";
+import { useMemo, useState, useEffect } from "react";
 import { DisplayTasks } from "./DisplayTasks";
 import { AddTaskForm } from "./AddTaskForm";
 import { FilterInput } from "./FilterInput";
 import { ITask } from "./Interfaces/ITask";
+import "./App.css";
+
 function App() {
   const [tasks, setTasks] = useState<ITask[]>([]);
   const [filter, setFilter] = useState("");
   const [toggleAddTask, setToggleAddTask] = useState(false);
   const [caseSensitive, setCaseSensitive] = useState(true);
   const changeCompleted = (taskId: number, newCompleted: boolean) => {
-    const updatedTasks = tasks.map((task) =>
-      task.id === taskId ? { ...task, completed: newCompleted } : task
+    setTasks((prevTasks) =>
+      prevTasks.map((task) =>
+        task.id === taskId ? { ...task, completed: newCompleted } : task
+      )
     );
-    setTasks(updatedTasks);
   };
   const addTask = (title: string, completed: boolean) => {
-    setTasks([...tasks, { title, completed, id: Date.now() }]);
+    setTasks((prevTasks) => [
+      ...prevTasks,
+      { title, completed, id: Date.now() },
+    ]);
     setToggleAddTask(false);
   };
   const cancelEdit = () => {
     setToggleAddTask(false);
   };
   const deleteTask = (id: number) => {
-    const newTasks = tasks.filter((task) => task.id != id);
-    setTasks([...newTasks]);
+    setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
   };
   const updateTask = (taskId: number, newTitle: string) => {
-    const updatedTasks = tasks.map((task) =>
-      task.id === taskId ? { ...task, title: newTitle } : task
+    setTasks((prevTasks) =>
+      prevTasks.map((task) =>
+        task.id === taskId ? { ...task, title: newTitle } : task
+      )
     );
-    setTasks(updatedTasks);
   };
-
   const updateFilter = (input: string) => {
     setFilter(input);
   };
-
   useEffect(() => {
     localStorage.setItem("tasks", JSON.stringify(tasks));
   }, [tasks]);
@@ -50,31 +54,33 @@ function App() {
       }
     }
   }, []);
-
   const filteredTasks = useMemo(() => {
     return tasks.filter((task) => {
       if (caseSensitive) {
-        return task.title.indexOf(filter) !== -1;
+        return task.title.includes(filter);
       } else {
-        return task.title.toLowerCase().indexOf(filter.toLowerCase()) !== -1;
+        return task.title.toLowerCase().includes(filter.toLowerCase());
       }
     });
   }, [tasks, filter, caseSensitive]);
-  if (toggleAddTask) {
-    return <AddTaskForm addTask={addTask} cancelEdit={cancelEdit} />;
-  } else {
-    return (
+  return (
+    <div className="app-container">
+      {toggleAddTask ? (
+        <AddTaskForm addTask={addTask} cancelEdit={cancelEdit} />
+      ) : (
         <>
-                <FilterInput input={filter} changeFilter={updateFilter} />
-          <label>
+          <FilterInput input={filter} changeFilter={updateFilter} />
+          <label htmlFor="case-sensitive">
             Case Sensitive
             <input
+              id="case-sensitive"
               type="checkbox"
               checked={caseSensitive}
-              onChange={() => setCaseSensitive(!caseSensitive)}></input>
+              onChange={() => setCaseSensitive((prev) => !prev)}
+            />
           </label>
           <button
-            style={{ border: "none", background: "none", cursor: "pointer" }}
+            className="add-task-button"
             onClick={() => setToggleAddTask(true)}>
             ⊕
           </button>
@@ -85,8 +91,9 @@ function App() {
             deleteTask={deleteTask}
           />
         </>
-    );
-  }
+      )}
+    </div>
+  );
 }
 
 export default App;

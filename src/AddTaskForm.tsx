@@ -24,6 +24,7 @@ export const AddTaskForm = ({ addTask, cancelEdit }: AddTaskFormProps) => {
       <label htmlFor="task-title">
         Task Title:
         <input
+          autoFocus 
           id="task-title"
           type="text"
           required
