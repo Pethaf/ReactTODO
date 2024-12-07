@@ -1,4 +1,5 @@
-import { useContext } from "react";
-export const FilterInput = () => {
+import React from "react";
+
+export const FilterInput = ({input, changeFilter}) => {
   return <input type="text" value={input} onChange={(e) => changeFilter(e.target.value)} />;
 };

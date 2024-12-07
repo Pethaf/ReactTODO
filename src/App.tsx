@@ -1,14 +1,13 @@
-import { useMemo, useState, useEffect, useContext } from "react";
+import { useMemo, useState, useEffect} from "react";
 import { DisplayTasks } from "./DisplayTasks";
 import { AddTaskForm } from "./AddTaskForm";
 import { FilterInput } from "./FilterInput";
+import React from "react";
 interface Task {
   id: number;
   title: string;
   completed: boolean;
 }
-const FilterContext = createContext(null);
-
 function App() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [filter, setFilter] = useState("");
@@ -71,9 +70,7 @@ function App() {
   } else {
     return (
         <>
-              <FilterContext.Provider value = {{updateFilter, filter}}>
-                <FilterInput />
-              </FilterContext.Provider>
+                <FilterInput input={filter} changeFilter={updateFilter} />
           <label>
             Case Sensitive
             <input
@@ -93,7 +90,6 @@ function App() {
             deleteTask={deleteTask}
           />
         </>
-      </ThemeContext.Provider>
     );
   }
 }
