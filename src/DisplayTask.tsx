@@ -1,15 +1,11 @@
 import { useState } from "react";
 import "./DisplayTask.css";
-interface TaskProps {
-  id: number;
-  title: string;
-  completed: boolean;
-  changeCompleted: (taskId: number, newCompleted: boolean) => void;
-  updateTask: (taskId: number, newTitle: string) => void;
-  deleteTask: (taskId:number) => void;
-}
+import {ITask } from "./Interfaces/ITask";
+import { ITaskHandlers } from "./Interfaces/ITaskHandler";
 
-export const DisplayTask: React.FC<TaskProps> = ({
+interface ITaskProps extends ITask, ITaskHandlers {}
+
+export const DisplayTask: React.FC<ITaskProps> = ({
   id,
   title,
   completed,

@@ -2,14 +2,9 @@ import { useMemo, useState, useEffect} from "react";
 import { DisplayTasks } from "./DisplayTasks";
 import { AddTaskForm } from "./AddTaskForm";
 import { FilterInput } from "./FilterInput";
-import React from "react";
-interface Task {
-  id: number;
-  title: string;
-  completed: boolean;
-}
+import { ITask } from "./Interfaces/ITask";
 function App() {
-  const [tasks, setTasks] = useState<Task[]>([]);
+  const [tasks, setTasks] = useState<ITask[]>([]);
   const [filter, setFilter] = useState("");
   const [toggleAddTask, setToggleAddTask] = useState(false);
   const [caseSensitive, setCaseSensitive] = useState(true);
